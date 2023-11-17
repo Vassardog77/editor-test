@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
+import '../App.css';
 
-function Textbox({ initialText, onTextChange }) {
+function Textbox({ initialText, onTextChange, size }) {
   const [text, setText] = useState(initialText);
   const [isEditing, setIsEditing] = useState(false);
   const [isFirstEdit, setIsFirstEdit] = useState(true);
@@ -34,15 +35,17 @@ function Textbox({ initialText, onTextChange }) {
   return (
     <div onClick={() => setIsEditing(true)}>
       {isEditing ? (
-        <input
+        <textarea
           ref={inputRef}
           value={text}
           onChange={(e) => setText(e.target.value)}
           onBlur={handleBlur}
           onKeyPress={handleKeyPress}
+          className="textboxEdit"
+          style={{ width: size?.width, height: size?.height }} // Inline styles for dynamic sizing
         />
       ) : (
-        <span>{text}</span>
+        <span className="textboxDisplay">{text}</span>
       )}
     </div>
   );

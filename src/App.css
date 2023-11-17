@@ -10,3 +10,47 @@
   position: relative;
   z-index: 1; 
 }
+
+.textboxDisplay {
+  font-size: 16px; /* Example font size */
+  line-height: 1.5; /* Adjust line height for better readability */
+  color: #333; /* Text color */
+  white-space: pre-wrap; /* Preserve line breaks and spaces */
+  word-wrap: break-word; /* Ensure long words don't overflow */
+  background-color: transparent; /* Background color */
+  border: none; /* Remove border */
+  outline: none; /* Remove focus outline */
+}
+
+.textboxEdit {
+  font-size: 16px; /* Must match display mode */
+  line-height: 1.5; /* Must match display mode */
+  color: #333; /* Must match display mode */
+  white-space: pre-wrap; /* Match display mode */
+  word-wrap: break-word; /* Match display mode */
+  background-color: transparent; /* Match display mode */
+  border: none; /* No border */
+  outline: none; /* No focus outline */
+  resize: none; /* Disable resizing, handled by your resizable component */
+  width: 100%; /* Take full width of the parent */
+  height: 100%; /* Take full height of the parent */
+  overflow: auto; /* Scrollbar for overflow text */
+  padding: 0; /* Remove padding */
+}
+.textbox textarea {
+  font-size: 16px; /* Must match display mode */
+  line-height: 1.5; /* Must match display mode */
+  color: #333; /* Must match display mode */
+  white-space: pre-wrap; /* Match display mode */
+  word-wrap: break-word; /* Match display mode */
+  background-color: transparent; /* Match display mode */
+  border: none; /* No border */
+  outline: none; /* No focus outline */
+  resize: none; /* Disable resizing, handled by your resizable component */
+  width: 100%; /* Take full width of the parent */
+  height: 900px; /* Take full height of the parent */
+  overflow: auto; /* Scrollbar for overflow text */
+  padding: 0; /* Remove padding */
+}
+
+

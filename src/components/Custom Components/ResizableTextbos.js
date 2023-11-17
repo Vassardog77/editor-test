@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import '../../App.css';
 
 function ResizableTextbox({ children }) {
   const [size, setSize] = useState({ width: 200, height: 200 }); // Default size
@@ -24,9 +25,9 @@ function ResizableTextbox({ children }) {
   };
 
   return (
-    <div ref={resizeRef} style={{ width: size.width, height: size.height, position: 'relative', zIndex: 1 }}>
+    <div className="textbox" ref={resizeRef} style={{ width: size.width, height: size.height, position: 'relative', zIndex: 1, outlineStyle: "solid" }}>
       {children}
-      <div onMouseDown={startResizing} style={{ position: 'absolute', bottom: 0, right: 0, cursor: 'nwse-resize', background: '#333', width: '900px', height: '900px', zIndex: 2 }} />
+      <div onMouseDown={startResizing} style={{ position: 'absolute', bottom: 0, right: 0, cursor: 'nwse-resize', background: '#333', width: '20px', height: '20px', zIndex: 2 }} />
     </div>
   );
 }

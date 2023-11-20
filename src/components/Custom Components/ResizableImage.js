@@ -1,73 +1,51 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import '../../App.css';
 
-function ResizableImage({ children }) {
-  const [size, setSize] = useState({ width: 200, height: 200 });
-  const resizeRef = useRef(null);
-  const [resizing, setResizing] = useState(false);
-  const [initialMousePosition, setInitialMousePosition] = useState({ x: 0, y: 0 });
+function ResizableImage({ children, src }) {
+    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+    const imageContainerRef = useRef(null);
 
-  const startResizing = (e) => {
-    e.preventDefault();
-    setResizing(true);
-    setInitialMousePosition({ x: e.clientX, y: e.clientY });
-    window.addEventListener('mousemove', resize);
-    window.addEventListener('mouseup', stopResizing);
-  };
+    // Set the image's initial dimensions
+    useEffect(() => {
+        if (src) {
+            const img = new Image();
+            img.onload = () => {
+                const initialWidth = img.height > 600 ? (img.width / img.height) * 600 : img.width;
+                const initialHeight = img.height > 600 ? 600 : img.height;
+                setDimensions({ width: initialWidth, height: initialHeight });
+            };
+            img.src = src;
+        }
+    }, [src]);
 
-  const resize = (e) => {
-    if (!resizing) return;
+    const startResizing = (e) => {
+        e.preventDefault();
+        window.addEventListener('mousemove', resize);
+        window.addEventListener('mouseup', stopResizing);
+    };
 
-    const deltaX = e.clientX - initialMousePosition.x;
-    const deltaY = e.clientY - initialMousePosition.y;
-    setSize(prevSize => ({
-      width: Math.max(100, prevSize.width + deltaX),
-      height: Math.max(100, prevSize.height + deltaY)
-    }));
-    setInitialMousePosition({ x: e.clientX, y: e.clientY });
-  };
+    const resize = (e) => {
+        const dimensions = imageContainerRef.current.getBoundingClientRect();
+        setDimensions({
+            width: e.clientX - dimensions.left,
+            height: e.clientY - dimensions.top
+        });
+    };
 
-  const stopResizing = () => {
-    setResizing(false);
-    window.removeEventListener('mousemove', resize);
-    window.removeEventListener('mouseup', stopResizing);
-  };
+    const stopResizing = () => {
+        window.removeEventListener('mousemove', resize);
+        window.removeEventListener('mouseup', stopResizing);
+    };
 
-  useEffect(() => {
-    if (resizeRef.current && resizeRef.current.firstChild) {
-      const img = resizeRef.current.firstChild;
-      const updateSize = () => {
-        setSize({ width: img.offsetWidth, height: img.offsetHeight });
-      };
-      if (img.complete) {
-        updateSize();
-      } else {
-        img.onload = updateSize;
-      }
-    }
-  }, [children]);
-
-  // Apply the size to the image
-  const imageStyle = { width: size.width + 'px', height: size.height + 'px' };
-
-  return (
-    <div ref={resizeRef} style={{ width: size.width, height: size.height, position: 'relative', zIndex: 1 }}>
-      {React.cloneElement(children, { style: imageStyle })}
-      <div 
-        onMouseDown={startResizing} 
-        style={{
-          position: 'absolute', 
-          bottom: 0, 
-          right: 0, 
-          cursor: 'nwse-resize', 
-          background: 'white',
-          outline: "solid", 
-          width: '20px', 
-          height: '20px', 
-          zIndex: 2 
-        }} 
-      />
-    </div>
-  );
+    return (
+        <div ref={imageContainerRef} className="image-container" style={{ width: dimensions.width, height: dimensions.height }}>
+            {React.cloneElement(children, { width: dimensions.width, height: dimensions.height })}
+            <div 
+                onMouseDown={startResizing} 
+                className="resize-handle" 
+            />
+        </div>
+    );
 }
 
 export default ResizableImage;

@@ -1,7 +1,6 @@
 
 
 .importedImage {
-  max-height: 600px;
   position: relative;
   z-index: 1;
 }
@@ -54,3 +53,19 @@
 }
 
 
+.image-container {
+  position: relative;
+  z-index: 1;
+}
+
+.resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  cursor: nwse-resize;
+  background: #ffffff;
+  outline-style: solid;
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+}

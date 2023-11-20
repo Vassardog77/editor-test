@@ -32,8 +32,8 @@ function EditorVisuals() {
       <div className="display-area">
         {elements.map((element, index) =>
           element.type === "image" ? (
-            <ResizableImage key={index}>
-              <ImageComponent src={element.src} />
+            <ResizableImage key={index} src={element.src}>
+                <ImageComponent src={element.src} />
             </ResizableImage>
           ) : (
             <ResizableTextbox key={index}>

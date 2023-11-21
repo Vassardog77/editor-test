@@ -1,7 +1,7 @@
 
 
 .importedImage {
-  position: relative;
+  position: absolute;
   z-index: 1;
 }
 
@@ -54,7 +54,7 @@
 
 
 .image-container {
-  position: relative;
+  position: absolute;
   z-index: 1;
 }
 

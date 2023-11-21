@@ -19,9 +19,12 @@ function ResizableImage({ children, src }) {
     }, [src]);
 
     const startResizing = (e) => {
-        e.preventDefault();
-        window.addEventListener('mousemove', resize);
-        window.addEventListener('mouseup', stopResizing);
+        // Ensure this event is only for resizing
+        if (e.target.className === 'resize-handle') {
+            e.stopPropagation(); // Prevent this event from bubbling up to draggable
+            window.addEventListener('mousemove', resize);
+            window.addEventListener('mouseup', stopResizing);
+        }
     };
 
     const resize = (e) => {

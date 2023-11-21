@@ -3,6 +3,7 @@ import Textbox from "./Textbox";
 import ImageComponent from "./Image"; 
 import ResizableImage from "./Custom Components/ResizableImage";
 import ResizableTextbox from "./Custom Components/ResizableTextbos";
+import DraggableImages from "./Custom Components/DraggableImages";
 
 function EditorVisuals() {
   const [elements, setElements] = useState([]);
@@ -32,9 +33,11 @@ function EditorVisuals() {
       <div className="display-area">
         {elements.map((element, index) =>
           element.type === "image" ? (
-            <ResizableImage key={index} src={element.src}>
-                <ImageComponent src={element.src} />
-            </ResizableImage>
+            <DraggableImages key={index}>
+                <ResizableImage src={element.src}>
+                    <ImageComponent src={element.src} />
+                </ResizableImage>
+            </DraggableImages>
           ) : (
             <ResizableTextbox key={index}>
               <Textbox

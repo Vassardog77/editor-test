@@ -4,9 +4,12 @@ import ImageComponent from "./Image";
 import ResizableImage from "./Custom Components/ResizableImage";
 import ResizableTextbox from "./Custom Components/ResizableTextbos";
 import DraggableImages from "./Custom Components/DraggableImages";
+import DraggableTextbox from "./Custom Components/DraggableTextbox";
 
 function EditorVisuals() {
   const [elements, setElements] = useState([]);
+
+  const fileInputRef = React.useRef(null);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -25,9 +28,16 @@ function EditorVisuals() {
   };
 
   return (
-    <div className="App">
+    <div className="background">
       <div className="top-bar">
-        <input type="file" accept="image/*" onChange={handleImageUpload} />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          style={{ display: 'none' }}
+          ref={fileInputRef}
+        />
+        <button onClick={() => fileInputRef.current.click()}>Import Image</button>
         <button onClick={addTextBox}>Add Text Box</button>
       </div>
       <div className="display-area">
@@ -39,12 +49,14 @@ function EditorVisuals() {
                 </ResizableImage>
             </DraggableImages>
           ) : (
-            <ResizableTextbox key={index}>
+            <DraggableTextbox key={index}>
+            <ResizableTextbox>
               <Textbox
                 initialText={element.text}
                 onTextChange={(newText) => handleTextChange(index, newText)}
               />
             </ResizableTextbox>
+          </DraggableTextbox>
           )
         )}
       </div>

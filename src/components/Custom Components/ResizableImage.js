@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../../App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowsSpin } from '@fortawesome/free-solid-svg-icons';
 
 function ResizableImage({ children, src }) {
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+    const [rotation, setRotation] = useState(0);
+    const [startPosition, setStartPosition] = useState({ x: 0, y: 0 }); // State to track the start position
     const imageContainerRef = useRef(null);
 
-    // Set the image's initial dimensions
     useEffect(() => {
         if (src) {
             const img = new Image();
@@ -19,19 +22,24 @@ function ResizableImage({ children, src }) {
     }, [src]);
 
     const startResizing = (e) => {
-        // Ensure this event is only for resizing
         if (e.target.className === 'resize-handle') {
-            e.stopPropagation(); // Prevent this event from bubbling up to draggable
+            e.stopPropagation();
+            const dimensions = imageContainerRef.current.getBoundingClientRect();
+            // Calculate and store the start position relative to the image
+            setStartPosition({ 
+                x: e.clientX - dimensions.right,
+                y: e.clientY - dimensions.bottom
+            });
             window.addEventListener('mousemove', resize);
             window.addEventListener('mouseup', stopResizing);
         }
     };
 
     const resize = (e) => {
-        const dimensions = imageContainerRef.current.getBoundingClientRect();
+        // Apply the start position offset when resizing
         setDimensions({
-            width: e.clientX - dimensions.left,
-            height: e.clientY - dimensions.top
+            width: e.clientX - imageContainerRef.current.getBoundingClientRect().left + startPosition.x,
+            height: e.clientY - imageContainerRef.current.getBoundingClientRect().top + startPosition.y
         });
     };
 
@@ -40,13 +48,37 @@ function ResizableImage({ children, src }) {
         window.removeEventListener('mouseup', stopResizing);
     };
 
+    const startRotating = (e) => {
+        e.stopPropagation();
+        setStartPosition({ x: e.clientX, y: e.clientY });
+        window.addEventListener('mousemove', rotate);
+        window.addEventListener('mouseup', stopRotating);
+    };
+
+    const rotate = (e) => {
+        const rect = imageContainerRef.current.getBoundingClientRect();
+        const center_x = rect.left + rect.width / 2;
+        const center_y = rect.top + rect.height / 2;
+        const radians = Math.atan2(e.clientX - center_x, e.clientY - center_y);
+        const degree = (radians * (180 / Math.PI) * -1) + 90;
+        setRotation(degree);
+    };
+
+    const stopRotating = () => {
+        window.removeEventListener('mousemove', rotate);
+        window.removeEventListener('mouseup', stopRotating);
+    };
+
     return (
-        <div ref={imageContainerRef} className="image-container" style={{ width: dimensions.width, height: dimensions.height }}>
+        <div 
+            ref={imageContainerRef} 
+            className="image-container" 
+            style={{ width: dimensions.width, height: dimensions.height, transform: `rotate(${rotation}deg)` }}>
             {React.cloneElement(children, { width: dimensions.width, height: dimensions.height })}
-            <div 
-                onMouseDown={startResizing} 
-                className="resize-handle" 
-            />
+            <div onMouseDown={startResizing} className="resize-handle" />
+            <div onMouseDown={startRotating} className="rotate-handle">
+                <FontAwesomeIcon icon={faArrowsSpin} size="2x" /> {/* FontAwesome icon for rotation */}
+            </div>
         </div>
     );
 }

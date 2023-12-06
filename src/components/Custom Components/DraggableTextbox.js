@@ -1,18 +1,29 @@
 import React, { useState, useRef } from 'react';
+import '../../App.css';
 
-function DraggableImages({ children }) {
+function DraggableTextbox({ children }) {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const dragItemRef = useRef(null);
-    const startPositionRef = useRef({ x: 0, y: 0 });
+    const startPositionRef = useRef(null);
 
     const startDragging = (e) => {
+        let target = e.target;
+
+        // Check if the target is an SVG element and adjust if necessary
+        if (target.nodeName === 'svg' || target.nodeName === 'path') {
+            target = target.parentNode; // Adjust to the parent node
+        }
+
+        // Ignore if the target is a resize handle or a rotate handle
+        if (target.className.includes('resize-handle') || target.className.includes('rotate-handle')) {
+            return;
+        }
+
         if (e.currentTarget === dragItemRef.current) {
             e.preventDefault();
-            const rect = dragItemRef.current.getBoundingClientRect();
-            // Calculate the offset from the mouse position to the element's top-left corner
             startPositionRef.current = {
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top,
+                x: e.clientX - position.x,
+                y: e.clientY - position.y,
             };
             window.addEventListener('mousemove', onDrag);
             window.addEventListener('mouseup', stopDragging);
@@ -20,7 +31,10 @@ function DraggableImages({ children }) {
     };
 
     const onDrag = (e) => {
-        // Adjust position based on the initial offset
+        if (!startPositionRef.current) {
+            return;
+        }
+
         const newPosition = {
             x: e.clientX - startPositionRef.current.x,
             y: e.clientY - startPositionRef.current.y,
@@ -31,6 +45,7 @@ function DraggableImages({ children }) {
     const stopDragging = () => {
         window.removeEventListener('mousemove', onDrag);
         window.removeEventListener('mouseup', stopDragging);
+        startPositionRef.current = null; // Reset the start position reference
     };
 
     return (
@@ -44,4 +59,4 @@ function DraggableImages({ children }) {
     );
 }
 
-export default DraggableImages;
+export default DraggableTextbox;

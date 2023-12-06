@@ -1,4 +1,41 @@
 
+.background {
+  background-color: grey;
+  height: 100%;
+}
+.top-bar {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.top-bar input[type="file"],
+.top-bar button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: 1px solid #d0d0d0;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.top-bar button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+/* Display area - where the elements will be shown */
+.display-area {
+  background-color: #fff;
+  min-height: 100rem; /* Adjust as needed */
+  margin: 50px;
+  padding: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: auto;
+}
 
 .importedImage {
   position: absolute;
@@ -8,6 +45,12 @@
 .textboxClass {
   position: relative;
   z-index: 1; 
+}
+
+.textbox {
+  position: relative;
+  z-index: 1;
+  outline-style: solid;
 }
 
 .textboxDisplay {
@@ -68,4 +111,14 @@
   width: 20px;
   height: 20px;
   z-index: 2;
+}
+
+.rotate-handle {
+  /* Style your rotate handle here */
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  bottom: -15px;
+  right: -15px;
+  cursor: pointer;
 }

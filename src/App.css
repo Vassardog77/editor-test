@@ -115,10 +115,14 @@
 
 .rotate-handle {
   /* Style your rotate handle here */
-  width: 20px;
-  height: 20px;
+  width: 10px;
+  height: 10px;
   position: absolute;
-  bottom: -15px;
-  right: -15px;
+  top: -40px; /* Adjusted to place the handle above the image */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust horizontally to center */
   cursor: pointer;
 }
+
+
+

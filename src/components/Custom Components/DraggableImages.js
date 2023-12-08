@@ -8,11 +8,9 @@ function DraggableImages({ children }) {
     const startDragging = (e) => {
         if (e.currentTarget === dragItemRef.current) {
             e.preventDefault();
-            const rect = dragItemRef.current.getBoundingClientRect();
-            // Calculate the offset from the mouse position to the element's top-left corner
             startPositionRef.current = {
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top,
+                x: e.clientX - position.x,
+                y: e.clientY - position.y,
             };
             window.addEventListener('mousemove', onDrag);
             window.addEventListener('mouseup', stopDragging);

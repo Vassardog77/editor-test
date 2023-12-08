@@ -38,10 +38,14 @@ function ResizableTextbox({ children }) {
     const rect = textboxRef.current.getBoundingClientRect();
     const center_x = rect.left + rect.width / 2;
     const center_y = rect.top + rect.height / 2;
-    const radians = Math.atan2(e.clientX - center_x, e.clientY - center_y);
-    const degree = (radians * (180 / Math.PI) * -1) + 90;
+
+    // Calculate the angle between the current mouse position and the center of the image
+    const angle = Math.atan2(center_y - e.clientY, center_x - e.clientX);
+
+    // Convert radians to degrees and update the rotation state
+    const degree = (angle * (180 / Math.PI)) - 90;
     setRotation(degree);
-  };
+};
 
   const stopRotating = () => {
     window.removeEventListener('mousemove', rotate);

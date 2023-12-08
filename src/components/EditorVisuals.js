@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Textbox from "./Textbox";
 import ImageComponent from "./Image"; 
 import ResizableImage from "./Custom Components/ResizableImage";
-import ResizableTextbox from "./Custom Components/ResizableTextbos";
+import ResizableTextbox from "./Custom Components/ResizableTextbox";
 import DraggableImages from "./Custom Components/DraggableImages";
 import DraggableTextbox from "./Custom Components/DraggableTextbox";
 
